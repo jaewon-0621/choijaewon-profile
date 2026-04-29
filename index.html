@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>자기소개 | 최재원</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', 'Apple SD Gothic Neo', sans-serif;
+      background: #f0f4f8;
+      color: #2d3748;
+      min-height: 100vh;
+    }
+
+    /* ── 헤더 ── */
+    header {
+      background: linear-gradient(135deg, #2c3e7a 0%, #4a6fa5 100%);
+      color: white;
+      padding: 60px 20px 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .avatar {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 52px;
+      margin: 0 auto 20px;
+      border: 3px solid rgba(255,255,255,0.4);
+    }
+
+    header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+
+    header p.subtitle {
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+
+    /* ── 메인 카드 그리드 ── */
+    main {
+      max-width: 900px;
+      margin: -40px auto 60px;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 620px) {
+      main { grid-template-columns: 1fr; }
+      header h1 { font-size: 1.6rem; }
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    }
+
+    .card.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .card-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #2c3e7a;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #e8edf5;
+    }
+
+    .card-title .icon {
+      font-size: 1.3rem;
+    }
+
+    /* ── 기본 정보 ── */
+    .info-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .info-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.92rem;
+    }
+
+    .info-list .label {
+      color: #718096;
+      font-weight: 600;
+    }
+
+    .info-list .value {
+      font-weight: 700;
+      color: #2d3748;
+    }
+
+    /* ── 학업 능력 (스킬 바) ── */
+    .skill-item {
+      margin-bottom: 14px;
+    }
+
+    .skill-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #4a5568;
+      margin-bottom: 6px;
+    }
+
+    .skill-bar {
+      height: 10px;
+      background: #e8edf5;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .skill-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, #2c3e7a, #4a6fa5);
+    }
+
+    /* ── 수능 성적 사진 ── */
+    .score-image-wrap {
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #f7f9fc;
+      border: 2px dashed #c3cfe2;
+      min-height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .score-image-wrap img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 10px;
+    }
+
+    .score-image-wrap .placeholder {
+      text-align: center;
+      color: #a0aec0;
+      padding: 40px 20px;
+    }
+
+    .score-image-wrap .placeholder .ph-icon {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .score-image-wrap .placeholder p {
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    .score-image-wrap .placeholder code {
+      background: #e8edf5;
+      color: #4a5568;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 0.82rem;
+    }
+
+    /* ── 자기소개 ── */
+    .intro-text {
+      font-size: 0.95rem;
+      line-height: 1.9;
+      color: #718096;
+      font-style: italic;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.8rem;
+      color: #a0aec0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── 헤더 ── -->
+  <header>
+    <div class="avatar">👤</div>
+    <h1>최재원</h1>
+    <p class="subtitle">서울대학교 첨단융합학부</p>
+  </header>
+
+  <!-- ── 카드 그리드 ── -->
+  <main>
+
+    <!-- 기본 정보 -->
+    <div class="card">
+      <div class="card-title"><span class="icon">📋</span> 기본 정보</div>
+      <ul class="info-list">
+        <li><span class="label">이름</span><span class="value">최재원</span></li>
+        <li><span class="label">생년월일</span><span class="value">2005. 06. 21</span></li>
+        <li><span class="label">나이</span><span class="value">20세</span></li>
+        <li><span class="label">학교</span><span class="value">서울대학교 첨단융합학부</span></li>
+        <li><span class="label">이메일</span><span class="value">choijaewon05@snu.ac.kr</span></li>
+      </ul>
+    </div>
+
+    <!-- 학업 능력 -->
+    <div class="card">
+      <div class="card-title"><span class="icon">📚</span> 학업 능력</div>
+
+      <div class="skill-item">
+        <div class="skill-header"><span>국어</span><span>85%</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:85%"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-header"><span>수학</span><span>90%</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-header"><span>영어</span><span>88%</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-header"><span>탐구 (과학)</span><span>80%</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-header"><span>한국사</span><span>95%</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div>
+      </div>
+    </div>
+
+    <!-- 수능 성적 -->
+    <div class="card full-width">
+      <div class="card-title"><span class="icon">🎯</span> 수능 성적</div>
+      <div class="score-image-wrap">
+        <!--
+          수능 성적 사진을 표시하려면:
+          이 파일(index.html)과 같은 폴더에 사진을 넣고
+          아래 img 태그의 src를 파일명에 맞게 수정하세요.
+          예: suneung.jpg, score.png 등
+        -->
+        <img src="suneung.jpg" alt="수능 성적" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+        <div class="placeholder" style="display:none; flex-direction:column; align-items:center;">
+          <div class="ph-icon">📄</div>
+          <p>
+            성적 사진을 이 폴더에 저장한 뒤<br>
+            파일명을 <code>suneung.jpg</code> 로 지정하면<br>
+            이 자리에 자동으로 표시됩니다.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 자기소개 -->
+    <div class="card full-width">
+      <div class="card-title"><span class="icon">💬</span> 자기소개</div>
+      <p class="intro-text">추후 입력해놓겠습니다.</p>
+    </div>
+
+  </main>
+
+  <footer>
+    &copy; 2026 최재원
+  </footer>
+
+</body>
+</html>
