@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>자기소개 | 최재원</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
   <style>
     * {
       margin: 0;
@@ -155,9 +156,9 @@
     .grade-badge-row {
       display: flex;
       justify-content: space-around;
-      margin-top: 16px;
-      padding-top: 16px;
-      border-top: 2px solid #e5e5e5;
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid #e5e5e5;
     }
 
     .grade-badge {
@@ -182,6 +183,13 @@
       font-size: 0.8rem;
       font-weight: 600;
       color: #555555;
+    }
+
+    .grade-badge .pct.high {
+      text-decoration: underline;
+      text-decoration-color: red;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 3px;
     }
 
     .card.no-lift:hover {
@@ -237,10 +245,10 @@
         <button class="grade-tab-btn" data-subject="math">수학</button>
         <button class="grade-tab-btn" data-subject="earth">지구과학I</button>
       </div>
+      <div class="grade-badge-row" id="gradeBadges"></div>
       <div class="grade-chart-wrap">
         <canvas id="gradeChart"></canvas>
       </div>
-      <div class="grade-badge-row" id="gradeBadges"></div>
     </div>
 
     <!-- 자기소개 -->
@@ -290,13 +298,44 @@
       document.getElementById('gradeBadges').innerHTML = EXAM_LABELS.map((label, i) => `
         <div class="grade-badge">
           <span class="exam-name">${label}</span>
-          <span class="pct">${s.percentile[i]}<small style="font-size:0.7em">%</small></span>
+          <span class="pct${s.percentile[i] >= 96 ? ' high' : ''}">${s.percentile[i]}<small style="font-size:0.7em">%</small></span>
           <span class="grade-label">${s.grade[i]}등급</span>
         </div>
       `).join('');
     }
 
+    const axisBreakPlugin = {
+      id: 'axisBreak',
+      afterDraw(chart) {
+        const { ctx, chartArea } = chart;
+        const x = chartArea.left;
+        const y = chartArea.bottom;
+
+        ctx.save();
+        ctx.fillStyle = 'white';
+        ctx.fillRect(x - 14, y - 16, 28, 18);
+
+        ctx.strokeStyle = '#bbbbbb';
+        ctx.lineWidth = 1.5;
+        ctx.lineJoin = 'round';
+        ctx.lineCap = 'round';
+
+        [y - 11, y - 3].forEach(baseY => {
+          ctx.beginPath();
+          ctx.moveTo(x - 8, baseY + 4);
+          ctx.lineTo(x - 4, baseY - 4);
+          ctx.lineTo(x,     baseY + 4);
+          ctx.lineTo(x + 4, baseY - 4);
+          ctx.lineTo(x + 8, baseY + 4);
+          ctx.stroke();
+        });
+
+        ctx.restore();
+      }
+    };
+
     document.addEventListener('DOMContentLoaded', () => {
+      Chart.register(ChartDataLabels, axisBreakPlugin);
       const ctx = document.getElementById('gradeChart').getContext('2d');
 
       gradeChart = new Chart(ctx, {
@@ -346,6 +385,14 @@
                   return `백분위 ${ctx.parsed.y}% · ${grade}등급`;
                 }
               }
+            },
+            datalabels: {
+              anchor: 'center',
+              align: 'bottom',
+              offset: 8,
+              color: '#333333',
+              font: { weight: '700', size: 11 },
+              formatter: (value) => value + '%'
             }
           }
         }
