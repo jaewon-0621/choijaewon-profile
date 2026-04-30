@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>자기소개 | 최재원</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     * {
       margin: 0;
@@ -164,48 +165,75 @@
       background: linear-gradient(90deg, #2c3e7a, #4a6fa5);
     }
 
-    /* ── 수능 성적 사진 ── */
-    .score-image-wrap {
-      width: 100%;
-      border-radius: 12px;
-      overflow: hidden;
-      background: #f7f9fc;
-      border: 2px dashed #c3cfe2;
-      min-height: 200px;
+    /* ── 성적 추이 탭 ── */
+    .grade-tabs-bar {
       display: flex;
-      align-items: center;
-      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
     }
 
-    .score-image-wrap img {
-      width: 100%;
-      height: auto;
-      display: block;
+    .grade-tab-btn {
+      flex: 1;
+      padding: 12px 16px;
+      border: 2px solid #e8edf5;
       border-radius: 10px;
+      background: #f7f9fc;
+      color: #718096;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
     }
 
-    .score-image-wrap .placeholder {
+    .grade-tab-btn:hover,
+    .grade-tab-btn.active {
+      border-color: #2c3e7a;
+      background: #2c3e7a;
+      color: white;
+      box-shadow: 0 4px 12px rgba(44,62,122,0.25);
+    }
+
+    .grade-chart-wrap {
+      position: relative;
+      height: 260px;
+    }
+
+    .grade-badge-row {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 2px solid #e8edf5;
+    }
+
+    .grade-badge {
       text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .grade-badge .exam-name {
+      font-size: 0.75rem;
       color: #a0aec0;
-      padding: 40px 20px;
     }
 
-    .score-image-wrap .placeholder .ph-icon {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
+    .grade-badge .pct {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #2c3e7a;
     }
 
-    .score-image-wrap .placeholder p {
-      font-size: 0.88rem;
-      line-height: 1.6;
-    }
-
-    .score-image-wrap .placeholder code {
-      background: #e8edf5;
+    .grade-badge .grade-label {
+      font-size: 0.8rem;
+      font-weight: 600;
       color: #4a5568;
-      padding: 2px 7px;
-      border-radius: 4px;
-      font-size: 0.82rem;
+    }
+
+    .card.no-lift:hover {
+      transform: none;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.07);
     }
 
     /* ── 자기소개 ── */
@@ -274,26 +302,18 @@
       </div>
     </div>
 
-    <!-- 수능 성적 -->
-    <div class="card full-width">
-      <div class="card-title"><span class="icon">🎯</span> 수능 성적</div>
-      <div class="score-image-wrap">
-        <!--
-          수능 성적 사진을 표시하려면:
-          이 파일(index.html)과 같은 폴더에 사진을 넣고
-          아래 img 태그의 src를 파일명에 맞게 수정하세요.
-          예: suneung.jpg, score.png 등
-        -->
-        <img src="suneung.jpg" alt="수능 성적" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-        <div class="placeholder" style="display:none; flex-direction:column; align-items:center;">
-          <div class="ph-icon">📄</div>
-          <p>
-            성적 사진을 이 폴더에 저장한 뒤<br>
-            파일명을 <code>suneung.jpg</code> 로 지정하면<br>
-            이 자리에 자동으로 표시됩니다.
-          </p>
-        </div>
+    <!-- 성적 추이 -->
+    <div class="card full-width no-lift">
+      <div class="card-title"><span class="icon">📊</span> 성적 추이</div>
+      <div class="grade-tabs-bar">
+        <button class="grade-tab-btn active" data-subject="korean">국어</button>
+        <button class="grade-tab-btn" data-subject="math">수학</button>
+        <button class="grade-tab-btn" data-subject="earth">지구과학I</button>
       </div>
+      <div class="grade-chart-wrap">
+        <canvas id="gradeChart"></canvas>
+      </div>
+      <div class="grade-badge-row" id="gradeBadges"></div>
     </div>
 
     <!-- 자기소개 -->
@@ -307,6 +327,127 @@
   <footer>
     &copy; 2026 최재원
   </footer>
+
+  <script>
+    const EXAM_LABELS = ['2024 수능', '2025 6월 모평', '2025 9월 모평', '2025 수능'];
+
+    const SUBJECTS = {
+      korean: {
+        name: '국어',
+        color: '#e53e3e',
+        bg: 'rgba(229,62,62,0.1)',
+        percentile: [88, 97, 99, 95],
+        grade: [3, 1, 1, 2]
+      },
+      math: {
+        name: '수학',
+        color: '#2c3e7a',
+        bg: 'rgba(44,62,122,0.1)',
+        percentile: [99, 100, 98, 99],
+        grade: [1, 1, 1, 1]
+      },
+      earth: {
+        name: '지구과학I',
+        color: '#38a169',
+        bg: 'rgba(56,161,105,0.1)',
+        percentile: [95, 93, 92, 98],
+        grade: [1, 2, 2, 1]
+      }
+    };
+
+    let currentSubject = 'korean';
+    let gradeChart;
+
+    function renderBadges(subject) {
+      const s = SUBJECTS[subject];
+      document.getElementById('gradeBadges').innerHTML = EXAM_LABELS.map((label, i) => `
+        <div class="grade-badge">
+          <span class="exam-name">${label}</span>
+          <span class="pct">${s.percentile[i]}<small style="font-size:0.7em">%</small></span>
+          <span class="grade-label">${s.grade[i]}등급</span>
+        </div>
+      `).join('');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const ctx = document.getElementById('gradeChart').getContext('2d');
+
+      gradeChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: EXAM_LABELS,
+          datasets: [{
+            label: '국어 백분위',
+            data: SUBJECTS.korean.percentile,
+            borderColor: SUBJECTS.korean.color,
+            backgroundColor: SUBJECTS.korean.bg,
+            fill: true,
+            tension: 0.35,
+            pointRadius: 7,
+            pointBackgroundColor: SUBJECTS.korean.color,
+            pointBorderColor: 'white',
+            pointBorderWidth: 2.5,
+            borderWidth: 3
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: { duration: 350 },
+          scales: {
+            y: {
+              min: 80,
+              max: 101,
+              ticks: {
+                stepSize: 5,
+                callback: v => v <= 100 ? v + '%' : ''
+              },
+              grid: { color: '#f0f4f8' }
+            },
+            x: {
+              grid: { display: false },
+              ticks: { font: { size: 11 } }
+            }
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => {
+                  const i = ctx.dataIndex;
+                  const grade = SUBJECTS[currentSubject].grade[i];
+                  return `백분위 ${ctx.parsed.y}% · ${grade}등급`;
+                }
+              }
+            }
+          }
+        }
+      });
+
+      renderBadges('korean');
+
+      document.querySelectorAll('.grade-tab-btn').forEach(btn => {
+        btn.addEventListener('mouseenter', () => {
+          const subject = btn.dataset.subject;
+          if (subject === currentSubject) return;
+          currentSubject = subject;
+
+          document.querySelectorAll('.grade-tab-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          const s = SUBJECTS[subject];
+          gradeChart.data.datasets[0].label = `${s.name} 백분위`;
+          gradeChart.data.datasets[0].data = s.percentile;
+          gradeChart.data.datasets[0].borderColor = s.color;
+          gradeChart.data.datasets[0].backgroundColor = s.bg;
+          gradeChart.data.datasets[0].pointBackgroundColor = s.color;
+          gradeChart.update('active');
+
+          renderBadges(subject);
+        });
+      });
+    });
+  </script>
 
 </body>
 </html>
