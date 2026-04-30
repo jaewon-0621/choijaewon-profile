@@ -14,14 +14,14 @@
 
     body {
       font-family: 'Segoe UI', 'Apple SD Gothic Neo', sans-serif;
-      background: #f0f4f8;
-      color: #2d3748;
+      background: #efefef;
+      color: #1a1a1a;
       min-height: 100vh;
     }
 
     /* ── 헤더 ── */
     header {
-      background: linear-gradient(135deg, #2c3e7a 0%, #4a6fa5 100%);
+      background: #111111;
       color: white;
       padding: 60px 20px 80px;
       text-align: center;
@@ -29,28 +29,14 @@
       overflow: hidden;
     }
 
-    header::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 60%);
-      pointer-events: none;
-    }
-
     .avatar {
-      width: 110px;
-      height: 110px;
+      width: 90px;
+      height: 90px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 52px;
+      object-fit: cover;
+      display: block;
       margin: 0 auto 20px;
-      border: 3px solid rgba(255,255,255,0.4);
+      border: 3px solid rgba(255,255,255,0.35);
     }
 
     header h1 {
@@ -62,7 +48,7 @@
 
     header p.subtitle {
       font-size: 1rem;
-      opacity: 0.8;
+      opacity: 0.7;
     }
 
     /* ── 메인 카드 그리드 ── */
@@ -98,19 +84,13 @@
     }
 
     .card-title {
-      display: flex;
-      align-items: center;
-      gap: 10px;
       font-size: 1rem;
       font-weight: 700;
-      color: #2c3e7a;
+      color: #111111;
       margin-bottom: 18px;
       padding-bottom: 12px;
-      border-bottom: 2px solid #e8edf5;
-    }
-
-    .card-title .icon {
-      font-size: 1.3rem;
+      border-bottom: 2px solid #e5e5e5;
+      letter-spacing: 0.03em;
     }
 
     /* ── 기본 정보 ── */
@@ -129,40 +109,13 @@
     }
 
     .info-list .label {
-      color: #718096;
+      color: #888888;
       font-weight: 600;
     }
 
     .info-list .value {
       font-weight: 700;
-      color: #2d3748;
-    }
-
-    /* ── 학업 능력 (스킬 바) ── */
-    .skill-item {
-      margin-bottom: 14px;
-    }
-
-    .skill-header {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.88rem;
-      font-weight: 600;
-      color: #4a5568;
-      margin-bottom: 6px;
-    }
-
-    .skill-bar {
-      height: 10px;
-      background: #e8edf5;
-      border-radius: 99px;
-      overflow: hidden;
-    }
-
-    .skill-fill {
-      height: 100%;
-      border-radius: 99px;
-      background: linear-gradient(90deg, #2c3e7a, #4a6fa5);
+      color: #1a1a1a;
     }
 
     /* ── 성적 추이 탭 ── */
@@ -175,10 +128,10 @@
     .grade-tab-btn {
       flex: 1;
       padding: 12px 16px;
-      border: 2px solid #e8edf5;
+      border: 2px solid #e5e5e5;
       border-radius: 10px;
-      background: #f7f9fc;
-      color: #718096;
+      background: #f7f7f7;
+      color: #888888;
       font-size: 0.95rem;
       font-weight: 600;
       cursor: pointer;
@@ -188,10 +141,10 @@
 
     .grade-tab-btn:hover,
     .grade-tab-btn.active {
-      border-color: #2c3e7a;
-      background: #2c3e7a;
+      border-color: #111111;
+      background: #111111;
       color: white;
-      box-shadow: 0 4px 12px rgba(44,62,122,0.25);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
     }
 
     .grade-chart-wrap {
@@ -204,7 +157,7 @@
       justify-content: space-around;
       margin-top: 16px;
       padding-top: 16px;
-      border-top: 2px solid #e8edf5;
+      border-top: 2px solid #e5e5e5;
     }
 
     .grade-badge {
@@ -216,19 +169,19 @@
 
     .grade-badge .exam-name {
       font-size: 0.75rem;
-      color: #a0aec0;
+      color: #aaaaaa;
     }
 
     .grade-badge .pct {
       font-size: 1.2rem;
       font-weight: 700;
-      color: #2c3e7a;
+      color: #111111;
     }
 
     .grade-badge .grade-label {
       font-size: 0.8rem;
       font-weight: 600;
-      color: #4a5568;
+      color: #555555;
     }
 
     .card.no-lift:hover {
@@ -240,7 +193,7 @@
     .intro-text {
       font-size: 0.95rem;
       line-height: 1.9;
-      color: #718096;
+      color: #888888;
       font-style: italic;
     }
 
@@ -248,7 +201,7 @@
       text-align: center;
       padding: 20px;
       font-size: 0.8rem;
-      color: #a0aec0;
+      color: #aaaaaa;
     }
   </style>
 </head>
@@ -256,7 +209,7 @@
 
   <!-- ── 헤더 ── -->
   <header>
-    <div class="avatar">👤</div>
+    <img class="avatar" src="profile.jpg" alt="프로필 사진" />
     <h1>최재원</h1>
     <p class="subtitle">서울대학교 첨단융합학부</p>
   </header>
@@ -265,8 +218,8 @@
   <main>
 
     <!-- 기본 정보 -->
-    <div class="card">
-      <div class="card-title"><span class="icon">📋</span> 기본 정보</div>
+    <div class="card full-width">
+      <div class="card-title">기본 정보</div>
       <ul class="info-list">
         <li><span class="label">이름</span><span class="value">최재원</span></li>
         <li><span class="label">생년월일</span><span class="value">2005. 06. 21</span></li>
@@ -276,35 +229,9 @@
       </ul>
     </div>
 
-    <!-- 학업 능력 -->
-    <div class="card">
-      <div class="card-title"><span class="icon">📚</span> 학업 능력</div>
-
-      <div class="skill-item">
-        <div class="skill-header"><span>국어</span><span>85%</span></div>
-        <div class="skill-bar"><div class="skill-fill" style="width:85%"></div></div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-header"><span>수학</span><span>90%</span></div>
-        <div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-header"><span>영어</span><span>88%</span></div>
-        <div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-header"><span>탐구 (과학)</span><span>80%</span></div>
-        <div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-header"><span>한국사</span><span>95%</span></div>
-        <div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div>
-      </div>
-    </div>
-
     <!-- 성적 추이 -->
     <div class="card full-width no-lift">
-      <div class="card-title"><span class="icon">📊</span> 성적 추이</div>
+      <div class="card-title">성적 추이</div>
       <div class="grade-tabs-bar">
         <button class="grade-tab-btn active" data-subject="korean">국어</button>
         <button class="grade-tab-btn" data-subject="math">수학</button>
@@ -318,7 +245,7 @@
 
     <!-- 자기소개 -->
     <div class="card full-width">
-      <div class="card-title"><span class="icon">💬</span> 자기소개</div>
+      <div class="card-title">자기소개</div>
       <p class="intro-text">추후 입력해놓겠습니다.</p>
     </div>
 
@@ -334,22 +261,22 @@
     const SUBJECTS = {
       korean: {
         name: '국어',
-        color: '#e53e3e',
-        bg: 'rgba(229,62,62,0.1)',
+        color: '#555555',
+        bg: 'rgba(85,85,85,0.1)',
         percentile: [88, 97, 99, 95],
         grade: [3, 1, 1, 2]
       },
       math: {
         name: '수학',
-        color: '#2c3e7a',
-        bg: 'rgba(44,62,122,0.1)',
+        color: '#1a1a1a',
+        bg: 'rgba(26,26,26,0.1)',
         percentile: [99, 100, 98, 99],
         grade: [1, 1, 1, 1]
       },
       earth: {
         name: '지구과학I',
-        color: '#38a169',
-        bg: 'rgba(56,161,105,0.1)',
+        color: '#999999',
+        bg: 'rgba(153,153,153,0.12)',
         percentile: [95, 93, 92, 98],
         grade: [1, 2, 2, 1]
       }
@@ -402,7 +329,7 @@
                 stepSize: 5,
                 callback: v => v <= 100 ? v + '%' : ''
               },
-              grid: { color: '#f0f4f8' }
+              grid: { color: '#eeeeee' }
             },
             x: {
               grid: { display: false },
