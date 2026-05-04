@@ -335,9 +335,11 @@
             y: {
               min: 80,
               max: 101,
+              afterBuildTicks(axis) {
+                axis.ticks = [80, 85, 90, 95, 100].map(v => ({ value: v }));
+              },
               ticks: {
-                stepSize: 5,
-                callback: v => v <= 100 ? v + '%' : ''
+                callback: v => v + '%'
               },
               grid: { color: '#eeeeee' }
             },
