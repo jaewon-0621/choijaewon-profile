@@ -241,9 +241,9 @@
     <div class="card full-width no-lift">
       <div class="card-title">성적 추이</div>
       <div class="grade-tabs-bar">
-        <button class="grade-tab-btn active" data-subject="korean">국어</button>
-        <button class="grade-tab-btn" data-subject="math">수학</button>
+        <button class="grade-tab-btn active" data-subject="math">수학</button>
         <button class="grade-tab-btn" data-subject="earth">지구과학I</button>
+        <button class="grade-tab-btn" data-subject="korean">국어</button>
       </div>
       <div class="grade-badge-row" id="gradeBadges"></div>
       <div class="grade-chart-wrap">
@@ -290,7 +290,7 @@
       }
     };
 
-    let currentSubject = 'korean';
+    let currentSubject = 'math';
     let gradeChart;
 
     function renderBadges(subject) {
@@ -304,38 +304,9 @@
       `).join('');
     }
 
-    const axisBreakPlugin = {
-      id: 'axisBreak',
-      afterDraw(chart) {
-        const { ctx, chartArea } = chart;
-        const x = chartArea.left;
-        const y = chartArea.bottom;
-
-        ctx.save();
-        ctx.fillStyle = 'white';
-        ctx.fillRect(x - 14, y - 16, 28, 18);
-
-        ctx.strokeStyle = '#bbbbbb';
-        ctx.lineWidth = 1.5;
-        ctx.lineJoin = 'round';
-        ctx.lineCap = 'round';
-
-        [y - 11, y - 3].forEach(baseY => {
-          ctx.beginPath();
-          ctx.moveTo(x - 8, baseY + 4);
-          ctx.lineTo(x - 4, baseY - 4);
-          ctx.lineTo(x,     baseY + 4);
-          ctx.lineTo(x + 4, baseY - 4);
-          ctx.lineTo(x + 8, baseY + 4);
-          ctx.stroke();
-        });
-
-        ctx.restore();
-      }
-    };
 
     document.addEventListener('DOMContentLoaded', () => {
-      Chart.register(ChartDataLabels, axisBreakPlugin);
+      Chart.register(ChartDataLabels);
       const ctx = document.getElementById('gradeChart').getContext('2d');
 
       gradeChart = new Chart(ctx, {
@@ -343,14 +314,14 @@
         data: {
           labels: EXAM_LABELS,
           datasets: [{
-            label: '국어 백분위',
-            data: SUBJECTS.korean.percentile,
-            borderColor: SUBJECTS.korean.color,
-            backgroundColor: SUBJECTS.korean.bg,
+            label: '수학 백분위',
+            data: SUBJECTS.math.percentile,
+            borderColor: SUBJECTS.math.color,
+            backgroundColor: SUBJECTS.math.bg,
             fill: true,
             tension: 0.35,
             pointRadius: 7,
-            pointBackgroundColor: SUBJECTS.korean.color,
+            pointBackgroundColor: SUBJECTS.math.color,
             pointBorderColor: 'white',
             pointBorderWidth: 2.5,
             borderWidth: 3
@@ -398,7 +369,7 @@
         }
       });
 
-      renderBadges('korean');
+      renderBadges('math');
 
       document.querySelectorAll('.grade-tab-btn').forEach(btn => {
         btn.addEventListener('mouseenter', () => {
